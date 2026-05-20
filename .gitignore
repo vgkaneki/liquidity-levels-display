@@ -1,0 +1,105 @@
+# See https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# compiled output
+dist
+tmp
+out-tsc
+*.tsbuildinfo
+.expo
+.expo-shared
+
+# dependencies
+node_modules
+
+# Local secrets and environment files
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.csr
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+# System Files
+.DS_Store
+Thumbs.db
+
+.cursor/rules/nx-rules.mdc
+.github/instructions/nx.instructions.md
+
+# Replit / local runtime
+.cache/
+.local/
+
+# Generated reports and validation exports
+reports/*.json
+reports/*.md
+!reports/.gitkeep
+reports/**/raw*/
+reports/**/full-source*/
+reports/**/exports*/
+*.full-source.zip
+*full-source*.zip
+*source-dump*.zip
+*validation-report*.zip
+*render-ready-source*.zip
+*render-ready-git*.zip
+
+# Heavy local artifacts / downloaded bundles
+*.tgz
+*.tar
+*.tar.gz
+*.7z
+*.rar
+*.zip
+!patches/*.zip
+!fixtures/**/*.zip
+
+# Local performance traces
+*.cpuprofile
+*.heapsnapshot
+performance-trace*.json
+lighthouse*.html
+lighthouse*.json
+
+# Cleanup-managed generated/local artifacts
+attached_assets/
+.agents/
+__pycache__/
+*.pyc
+exports/
+artifacts/**/reports/
+reports/
+*source-code.txt
+*_report.md
+CHANGES_APPLIED.txt
+import.meta.env.BASE_URL.replace

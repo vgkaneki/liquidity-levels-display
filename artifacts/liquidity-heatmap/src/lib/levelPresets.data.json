@@ -1,0 +1,179 @@
+{
+  "$comment": "Source of truth for level-display presets. Display/UI layer only — every key here corresponds to an existing field on settings.liquidity or settings.structuralLevels in chartSettings.tsx. Engine math, scoring, confluence-merge, registry decay, etc. are NOT touched. Both the TypeScript app (chartSettings.tsx → levelPresets.ts) and the Node-only test/evaluator scripts read this file so the values cannot drift between them. To change a preset, edit this file and re-run scripts/evaluatePresets.mjs to refresh the snapshot report.",
+  "version": 1,
+  "defaultPreset": "balanced",
+  "presets": [
+    {
+      "id": "balanced",
+      "label": "Balanced Pro",
+      "shortLabel": "Balanced",
+      "description": "Strongest levels + clean confluence. The recommended default — gates out the bottom 25% without becoming too restrictive.",
+      "estimatedRange": "≈8-12 levels",
+      "values": {
+        "liquidity": {
+          "showLevels": true,
+          "showElite": true,
+          "showStrong": true,
+          "showNormal": false,
+          "showBadges": true,
+          "eliteCount": 10,
+          "strongCount": 18,
+          "maxBadges": 10,
+          "minStrength": 0.25,
+          "minTouches": 2,
+          "useTierEngine": true,
+          "tierEngineHideUnrated": true,
+          "tierEngineShowBadges": true,
+          "opacityMultiplier": 1.15,
+          "lineWidthMultiplier": 1.0
+        },
+        "structuralLevels": {
+          "enabled": true,
+          "minConfidence": "medium",
+          "confluenceOnly": false,
+          "confluenceStrictSide": true,
+          "fillOpacity": 0.45,
+          "lineWidthMultiplier": 1.0,
+          "showLabels": true,
+          "methods": {
+            "kde-pivot-cluster": true,
+            "market-profile-poc": true,
+            "value-area-high": true,
+            "value-area-low": true,
+            "swing-pivot": true,
+            "quantile-band": true
+          }
+        }
+      }
+    },
+    {
+      "id": "confluence",
+      "label": "Confluence Focused",
+      "shortLabel": "Confluence",
+      "description": "Overlap-focused. Only structural zones overlapping liquidity render. Keeps the strongest reversal methods (swing pivots + quantile bands) on so confluence has enough candidates to find real overlaps instead of collapsing to zero. Precision comes from confluenceOnly + medium-confidence + tight liquidity strength/touch filters.",
+      "estimatedRange": "≈4-9 levels",
+      "values": {
+        "liquidity": {
+          "showLevels": true,
+          "showElite": true,
+          "showStrong": true,
+          "showNormal": false,
+          "showBadges": true,
+          "eliteCount": 6,
+          "strongCount": 12,
+          "maxBadges": 6,
+          "minStrength": 0.40,
+          "minTouches": 3,
+          "useTierEngine": true,
+          "tierEngineHideUnrated": true,
+          "tierEngineShowBadges": true,
+          "opacityMultiplier": 1.40,
+          "lineWidthMultiplier": 1.25
+        },
+        "structuralLevels": {
+          "enabled": true,
+          "minConfidence": "medium",
+          "confluenceOnly": true,
+          "confluenceStrictSide": false,
+          "fillOpacity": 0.55,
+          "lineWidthMultiplier": 1.20,
+          "showLabels": true,
+          "methods": {
+            "kde-pivot-cluster": true,
+            "market-profile-poc": true,
+            "value-area-high": true,
+            "value-area-low": true,
+            "swing-pivot": true,
+            "quantile-band": true
+          }
+        }
+      }
+    },
+    {
+      "id": "active",
+      "label": "Active Intraday",
+      "shortLabel": "Active",
+      "description": "Slightly looser. More valid setups during the day; all tiers visible. Useful when scalping / range trading.",
+      "estimatedRange": "≈14-22 levels",
+      "values": {
+        "liquidity": {
+          "showLevels": true,
+          "showElite": true,
+          "showStrong": true,
+          "showNormal": true,
+          "showBadges": true,
+          "eliteCount": 14,
+          "strongCount": 32,
+          "maxBadges": 12,
+          "minStrength": 0.15,
+          "minTouches": 1,
+          "useTierEngine": true,
+          "tierEngineHideUnrated": false,
+          "tierEngineShowBadges": true,
+          "opacityMultiplier": 1.00,
+          "lineWidthMultiplier": 0.90
+        },
+        "structuralLevels": {
+          "enabled": true,
+          "minConfidence": "low",
+          "confluenceOnly": false,
+          "confluenceStrictSide": false,
+          "fillOpacity": 0.40,
+          "lineWidthMultiplier": 0.90,
+          "showLabels": false,
+          "methods": {
+            "kde-pivot-cluster": true,
+            "market-profile-poc": true,
+            "value-area-high": true,
+            "value-area-low": true,
+            "swing-pivot": true,
+            "quantile-band": true
+          }
+        }
+      }
+    },
+    {
+      "id": "minimal",
+      "label": "Clean Minimal",
+      "shortLabel": "Minimal",
+      "description": "Lowest clutter. Elite-only liquidity, three strongest reversal methods (swing pivots + quantile bands + KDE pivot clusters), high-confidence zones. Prefers strongest-actual-reversal methods over visually-cleanest ones.",
+      "estimatedRange": "≈3-6 levels",
+      "values": {
+        "liquidity": {
+          "showLevels": true,
+          "showElite": true,
+          "showStrong": false,
+          "showNormal": false,
+          "showBadges": false,
+          "eliteCount": 6,
+          "strongCount": 6,
+          "maxBadges": 4,
+          "minStrength": 0.40,
+          "minTouches": 2,
+          "useTierEngine": true,
+          "tierEngineHideUnrated": true,
+          "tierEngineShowBadges": false,
+          "opacityMultiplier": 1.50,
+          "lineWidthMultiplier": 1.40
+        },
+        "structuralLevels": {
+          "enabled": true,
+          "minConfidence": "high",
+          "confluenceOnly": false,
+          "confluenceStrictSide": true,
+          "fillOpacity": 0.35,
+          "lineWidthMultiplier": 1.20,
+          "showLabels": true,
+          "methods": {
+            "kde-pivot-cluster": true,
+            "market-profile-poc": false,
+            "value-area-high": false,
+            "value-area-low": false,
+            "swing-pivot": true,
+            "quantile-band": true
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+This overlay assumes the THERMAL workspace layout from the uploaded source dump:
+- root pnpm workspace
+- frontend package: @workspace/liquidity-heatmap
+- API package: @workspace/api-server
+
+Apply this overlay on top of the project root, then drag the full project into Replit.

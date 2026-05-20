@@ -1,0 +1,20 @@
+name: Protected Engines
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  guard-protected-engines:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Use Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.16.0
+      - name: Verify protected engine files
+        run: node scripts/guard-protected-engines.cjs

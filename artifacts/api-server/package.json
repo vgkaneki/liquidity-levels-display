@@ -1,0 +1,48 @@
+{
+  "name": "@workspace/api-server",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "export NODE_ENV=development && pnpm run build && pnpm run start",
+    "build": "node ./build.mjs",
+    "start": "node ./start-safe.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "tsx --test src/services/engines/levels.test.ts src/services/engines/precision.test.ts src/services/engines/regime.test.ts src/services/engines/reliability.test.ts src/services/engines/orderflow.test.ts src/routes/levels.soak.test.ts src/services/candleSource.test.ts src/routes/liquidity/candles503.test.ts src/routes/liquidity/noSynthetic.test.ts src/routes/liquidity/unknownSymbol503.test.ts src/services/hlValidation/__tests__/stats.test.ts src/services/hlValidation/__tests__/antiLookahead.test.ts src/services/hlValidation/__tests__/engineAdapter.test.ts src/services/hlValidation/__tests__/evaluator.test.ts src/services/hlValidation/__tests__/benchmarks.test.ts src/services/hlValidation/__tests__/walkForward.test.ts src/services/hlValidation/__tests__/noSynthetic.test.ts src/routes/routeInputHardening.test.ts"
+  },
+  "dependencies": {
+    "@workspace/api-zod": "workspace:*",
+    "@workspace/db": "workspace:*",
+    "bcryptjs": "^3.0.3",
+    "compression": "^1.8.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2",
+    "drizzle-orm": "catalog:",
+    "express": "^5",
+    "express-rate-limit": "^8.4.1",
+    "express-session": "^1.19.0",
+    "openai": "^6.34.0",
+    "pino": "^9",
+    "pino-http": "^10",
+    "undici": "^8.1.0",
+    "web-push": "^3.6.7",
+    "ws": "^8.20.0",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^3.0.0",
+    "@types/compression": "^1.8.1",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/express-session": "^1.18.2",
+    "@types/node": "catalog:",
+    "@types/web-push": "^3.6.4",
+    "@types/ws": "^8.18.1",
+    "esbuild": "^0.27.3",
+    "esbuild-plugin-pino": "^2.3.3",
+    "pino-pretty": "^13",
+    "thread-stream": "3.1.0",
+    "tsx": "catalog:"
+  }
+}
