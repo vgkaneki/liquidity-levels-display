@@ -6,12 +6,12 @@ const override = process.env.ENGINE_PROTECTION_OVERRIDE === 'TYLER_CONFIRMED_ENG
 const protectedFiles = [
   {
     path: 'artifacts/api-server/src/services/engines/levels.ts',
-    sha: 'ea0c51ed31c59edfb686c2e9c28c44524767175f',
+    sha: '843634a6364a8c05c8eeda426bbc465b60ab2f99',
     reason: 'level placement, pivots, KDE/profile, validation, bounce/touch logic',
   },
   {
     path: 'artifacts/api-server/src/services/engines/confluence.ts',
-    sha: '3df16a6295a3be931251e299a76e0cdb6e38c24b',
+    sha: 'c3f9a5d2cd771d1b4bcaf51f11681d1ff334d6b7',
     reason: 'confluence merging and scoring',
   },
   {
@@ -51,7 +51,7 @@ const protectedFiles = [
   },
   {
     path: 'artifacts/api-server/src/services/hyperliquid.ts',
-    sha: '7f2144aed38de856e85b7b617f77628d193c6b00',
+    sha: '2a1c6e40b8bf4f4f2250c93f89184e97565efac5',
     reason: 'engine market-data adapter and request/lookback boundaries',
   },
 ];
