@@ -1,45 +1,34 @@
 services:
   - type: web
     name: liquidity-levels-display
-    runtime: node
+    env: node
     plan: free
     branch: main
-    buildCommand: corepack enable && corepack prepare pnpm@10.23.0 --activate && pnpm install --frozen-lockfile && pnpm run build:render
+    buildCommand: corepack enable && corepack prepare pnpm@latest --activate && pnpm install && pnpm build
     startCommand: pnpm start
     healthCheckPath: /api/readyz
-    autoDeployTrigger: commit
+    autoDeploy: true
     envVars:
       - key: NODE_VERSION
         value: 22.16.0
       - key: NODE_ENV
         value: production
-      - key: BASE_PATH
-        value: /
-      - key: STATIC_DIR
-        value: artifacts/liquidity-heatmap/dist/public
-      - key: SESSION_SECRET
-        generateValue: true
       - key: DATABASE_URL
         fromDatabase:
           name: liquidity-levels-db
           property: connectionString
-      - key: HL_RATE_LIMIT_PER_SEC
-        value: "2"
-      - key: HL_RATE_LIMIT_BURST
-        value: "3"
-      - key: ENABLE_LIVE_REST_BOOT_WARM
-        value: "0"
-      - key: ENABLE_MARKET_OVERVIEW_WARM
-        value: "0"
-      - key: ENABLE_CRITICAL_BOOT_WARM
-        value: "0"
+      - key: ALLOWED_ORIGINS
+        value: https://your-domain.com
+      - key: PUBLIC_APP_URL
+        value: https://your-domain.com
       - key: API_RATE_LIMIT_MAX
         value: "900"
+      - key: SESSION_SECRET
+        value: change-me-in-production
       - key: SERVER_REQUEST_TIMEOUT_MS
         value: "30000"
 
 databases:
   - name: liquidity-levels-db
     plan: free
-    databaseName: liquidity_levels
-    user: liquidity_levels_user
+    user: postgres
