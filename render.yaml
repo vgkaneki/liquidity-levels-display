@@ -6,7 +6,7 @@ services:
     branch: main
     buildCommand: corepack enable && corepack prepare pnpm@10.23.0 --activate && pnpm install --frozen-lockfile && pnpm run build:render
     startCommand: pnpm start
-    healthCheckPath: /api/healthz
+    healthCheckPath: /api/readyz
     autoDeployTrigger: commit
     envVars:
       - key: NODE_VERSION
