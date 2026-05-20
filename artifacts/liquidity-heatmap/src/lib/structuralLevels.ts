@@ -1,3 +1,5 @@
+// levelsRequestResilienceV1: foreground structural level requests use high-priority fetch headers.
+// chartRequestDebounceV1: debounce structural fetch subscriptions during rapid timeframe changes.
 import { useEffect, useState } from "react";
 import { apiUrl } from "@/lib/api";
 import { getDatafeed } from "@/datafeed";
