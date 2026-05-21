@@ -1,12 +1,16 @@
 const fs = require('fs');
 
+const verbose = process.env.ROUTE_INPUT_VERIFY_VERBOSE === '1' || process.env.CI_VERBOSE === '1';
 const checks = [];
 function read(file) {
   return fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : '';
 }
 function check(name, ok, detail) {
   checks.push({ name, ok, detail });
-  console.log(`[route-input-verify] ${ok ? 'OK' : 'FAIL'}: ${name}${detail ? ` — ${detail}` : ''}`);
+  if (ok && !verbose) return;
+  const line = `[route-input-verify] ${ok ? 'OK' : 'FAIL'}: ${name}${detail ? ` — ${detail}` : ''}`;
+  if (ok) console.log(line);
+  else console.error(line);
 }
 function contains(file, marker, name) {
   check(name, read(file).includes(marker), `${file} :: ${marker}`);
@@ -46,6 +50,30 @@ contains('artifacts/api-server/src/routes/hlValidation.ts', 'boundedInteger(body
 contains('artifacts/api-server/src/routes/hlValidation.ts', 'listOfStrings(body.symbols', 'HL validation forward symbol sanitizer wired');
 
 const failed = checks.filter((c) => !c.ok);
+const summary = {
+  ok: failed.length === 0,
+  checkedAt: new Date().toISOString(),
+  failedCount: failed.length,
+  totalChecks: checks.length,
+  checks,
+};
+fs.mkdirSync('reports', { recursive: true });
+fs.writeFileSync('reports/route-input-verification.json', JSON.stringify(summary, null, 2));
+fs.writeFileSync(
+  'reports/route-input-verification.md',
+  [
+    '# Route Input Hardening Verification',
+    '',
+    `Status: ${summary.ok ? 'PASS' : 'FAIL'}`,
+    `Checked at: ${summary.checkedAt}`,
+    `Checks: ${summary.totalChecks}`,
+    `Failures: ${summary.failedCount}`,
+    '',
+    '## Results',
+    ...checks.map((c) => `- ${c.ok ? 'PASS' : 'FAIL'} — ${c.name}${c.detail ? ` (${c.detail})` : ''}`),
+    '',
+  ].join('\n'),
+);
 if (failed.length > 0) {
   console.error(`[route-input-verify] failed ${failed.length}/${checks.length} checks`);
   process.exit(1);

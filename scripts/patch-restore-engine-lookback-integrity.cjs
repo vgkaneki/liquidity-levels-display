@@ -1,4 +1,8 @@
 const { execFileSync } = require('child_process');
+const verbose = process.env.PATCH_RUNNER_VERBOSE === '1' || process.env.CI_VERBOSE === '1';
+function log(message) {
+  if (verbose) console.log(message);
+}
 
 // restoreEngineSemanticsOnlyV3:
 // This script intentionally performs NO mutations to protected engine files.
@@ -16,11 +20,11 @@ const { execFileSync } = require('child_process');
 // touch rules, or orchestration semantics are modified during build.
 
 try {
-  execFileSync(process.execPath, ['scripts/guard-protected-engines.cjs'], { stdio: 'inherit' });
-  console.log('[restore-engine-lookback] protected engine baseline verified; no mutations applied');
+  execFileSync(process.execPath, ['scripts/guard-protected-engines.cjs'], { stdio: verbose ? 'inherit' : 'pipe' });
+  log('[restore-engine-lookback] protected engine baseline verified; no mutations applied');
 } catch (err) {
   console.error('[restore-engine-lookback] protected engine baseline verification failed');
   process.exit(typeof err?.status === 'number' ? err.status : 1);
 }
 
-console.log('[restore-engine-lookback] complete');
+log('[restore-engine-lookback] complete');
