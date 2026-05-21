@@ -16,12 +16,14 @@ for (const [key, value] of Object.entries(defaults)) {
   }
 }
 
-console.log('[api-server:start-safe] runtime defaults active', {
-  hlRateLimitPerSec: process.env.HL_RATE_LIMIT_PER_SEC,
-  hlRateLimitBurst: process.env.HL_RATE_LIMIT_BURST,
-  liveRestBootWarm: process.env.ENABLE_LIVE_REST_BOOT_WARM,
-  marketOverviewWarm: process.env.ENABLE_MARKET_OVERVIEW_WARM,
-  criticalBootWarm: process.env.ENABLE_CRITICAL_BOOT_WARM,
-});
+if (process.env.START_SAFE_VERBOSE === '1') {
+  console.log('[api-server:start-safe] runtime defaults active', {
+    hlRateLimitPerSec: process.env.HL_RATE_LIMIT_PER_SEC,
+    hlRateLimitBurst: process.env.HL_RATE_LIMIT_BURST,
+    liveRestBootWarm: process.env.ENABLE_LIVE_REST_BOOT_WARM,
+    marketOverviewWarm: process.env.ENABLE_MARKET_OVERVIEW_WARM,
+    criticalBootWarm: process.env.ENABLE_CRITICAL_BOOT_WARM,
+  });
+}
 
 await import('./dist/index.mjs');
