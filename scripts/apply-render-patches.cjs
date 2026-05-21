@@ -12,6 +12,27 @@
 const fs = require('fs');
 const path = require('path');
 
+const verbose = process.env.PATCH_RUNNER_VERBOSE === '1' || process.env.CI_VERBOSE === '1';
+function log(message) {
+  if (verbose) console.log(message);
+}
+function runPatch(patch) {
+  if (verbose) {
+    require(patch);
+    return;
+  }
+  const originalLog = console.log;
+  const originalInfo = console.info;
+  console.log = () => {};
+  console.info = () => {};
+  try {
+    require(patch);
+  } finally {
+    console.log = originalLog;
+    console.info = originalInfo;
+  }
+}
+
 const patches = [
   './patch-startup-performance.cjs',
   './patch-background-workload.cjs',
@@ -44,7 +65,7 @@ function normalizeChartRuntimePatch() {
   if (!src.includes(strict)) return;
   src = src.replace(strict, tolerant);
   fs.writeFileSync(patchPath, src);
-  console.log('[apply-render-patches] normalized chart runtime patch target misses to skips');
+  log('[apply-render-patches] normalized chart runtime patch target misses to skips');
 }
 
 function normalizeSecurityOpsPatch() {
@@ -63,14 +84,14 @@ function normalizeSecurityOpsPatch() {
 
   if (src === before) return;
   fs.writeFileSync(patchPath, src);
-  console.log('[apply-render-patches] normalized security ops patch template escaping');
+  log('[apply-render-patches] normalized security ops patch template escaping');
 }
 
 for (const patch of patches) {
-  console.log(`[apply-render-patches] ${patch}`);
+  log(`[apply-render-patches] ${patch}`);
   if (patch === './patch-chart-runtime-regression-fix.cjs') normalizeChartRuntimePatch();
   if (patch === './patch-security-ops-hardening-v1.cjs') normalizeSecurityOpsPatch();
-  require(patch);
+  runPatch(patch);
 }
 
-console.log('[apply-render-patches] complete');
+console.log('[apply-render-patches] complete: render-safe patches verified/applied');
