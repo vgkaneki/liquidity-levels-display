@@ -4,7 +4,7 @@ services:
     runtime: node
     plan: free
     branch: main
-    buildCommand: npm install -g pnpm@10.23.0 && pnpm install --frozen-lockfile && pnpm run build:render
+    buildCommand: npm install -g pnpm@10.23.0 && node scripts/quiet-render-verifier.cjs && pnpm install --frozen-lockfile && pnpm run build:render
     startCommand: node artifacts/api-server/start-safe.mjs
     healthCheckPath: /api/healthz
     autoDeployTrigger: commit
